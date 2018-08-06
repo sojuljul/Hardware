@@ -1,0 +1,532 @@
+00007000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.04
+Created On: 4/27/2017 4:24:36 PM
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      : Disassembler Project
+00000000                             3  * Written by : Kien Chin & Juliano Nguyen
+00000000                             4  * Date       : 4/21/17
+00000000                             5  * Description: Testing file for Disassembler
+00000000                             6  *-----------------------------------------------------------
+00007000                             7      ORG    $7000
+00007000                             8  START:                  ; first instruction of program
+00007000                             9  
+00007000                            10      * NOP
+00007000                            11      * MOVE, MOVEA, MOVEQ, MOVEM
+00007000                            12      * ADD, ADDA, ADDI, ADDQ
+00007000                            13      * SUB, SUBI    
+00007000                            14      * MULS, DIVU
+00007000                            15      * LEA
+00007000                            16      * AND, OR
+00007000                            17      * LSL, LSR, ASL, ASR
+00007000                            18      * ROL, ROR
+00007000                            19      * Bcc (BCC, BLT, BGE)
+00007000                            20      * JSR, RTS
+00007000                            21      * BRA
+00007000                            22      
+00007000                            23  *----- ADD -----
+00007000                            24  * s + Dn = Dn
+00007000  D200                      25      ADD.B   D0,D1       ; Dn
+00007002  D441                      26      ADD.W   D1,D2
+00007004  D682                      27      ADD.L   D2,D3
+00007006                            28      
+00007006  D44A                      29      ADD.W   A2,D2       ; An
+00007008  D68B                      30      ADD.L   A3,D3
+0000700A                            31      
+0000700A  D211                      32      ADD.B   (A1),D1     ; (An)
+0000700C  D452                      33      ADD.W   (A2),D2
+0000700E  D693                      34      ADD.L   (A3),D3
+00007010                            35      
+00007010  D219                      36      ADD.B   (A1)+,D1    ; (An)+
+00007012  D45A                      37      ADD.W   (A2)+,D2
+00007014  D69B                      38      ADD.L   (A3)+,D3
+00007016                            39      
+00007016  D221                      40      ADD.B   -(A1),D1    ; -(An)
+00007018  D462                      41      ADD.W   -(A2),D2
+0000701A  D6A3                      42      ADD.L   -(A3),D3
+0000701C                            43      
+0000701C  D239 00001234             44      ADD.B   WORD_VAR,D1 ; xxx.W
+00007022  D479 00001234             45      ADD.W   WORD_VAR,D2
+00007028  D6B9 00001234             46      ADD.L   WORD_VAR,D3
+0000702E                            47      
+0000702E  D239 FFFF1234             48      ADD.B   LONG_VAR,D1 ; xxx.L
+00007034  D479 FFFF1234             49      ADD.W   LONG_VAR,D2
+0000703A  D6B9 FFFF1234             50      ADD.L   LONG_VAR,D3
+00007040                            51      
+00007040  0601 000A                 52      ADD.B   #10,D1          ; #n
+00007044  0642 1234                 53      ADD.W   #WORD_VAR,D2
+00007048  0683 FFFF1234             54      ADD.L   #LONG_VAR,D3
+0000704E                            55      
+0000704E                            56  *----- ADDA ------
+0000704E                            57  * s + An = An
+0000704E  D0C0                      58      ADDA.W  D0,A0       ; Dn
+00007050  D3C1                      59      ADDA.L  D1,A1
+00007052                            60      
+00007052  D4C9                      61      ADDA.W  A1,A2       ; An
+00007054  D7CA                      62      ADDA.L  A2,A3
+00007056                            63      
+00007056  D4D1                      64      ADDA.W  (A1),A2     ; (An)
+00007058  D7D2                      65      ADDA.L  (A2),A3
+0000705A                            66      
+0000705A  D4DA                      67      ADDA.W  (A2)+,A2    ; (An)+
+0000705C  D7DB                      68      ADDA.L  (A3)+,A3
+0000705E                            69      
+0000705E  D8F9 00001234             70      ADDA.W  WORD_VAR,A4 ; xxx.W
+00007064  DBF9 00001234             71      ADDA.L  WORD_VAR,A5
+0000706A                            72      
+0000706A  D8F9 FFFF1234             73      ADDA.W  LONG_VAR,A4 ; xxx.L
+00007070  DBF9 FFFF1234             74      ADDA.L  LONG_VAR,A5
+00007076                            75              
+00007076  D4FC 1234                 76      ADDA.W   #WORD_VAR,A2   ; #n
+0000707A  D7FC FFFF1234             77      ADDA.L   #LONG_VAR,A3
+00007080                            78      
+00007080                            79  *----- ADDI -----
+00007080                            80  * #n + d = d
+00007080  0600 000A                 81      ADDI.B  #10,D0      ; Dn
+00007084  0641 04D2                 82      ADDI.W  #1234,D1
+00007088  0682 00BC614E             83      ADDI.L  #12345678,D2
+0000708E                            84      
+0000708E  0611 000A                 85      ADDI.B  #10,(A1)      ; (An)
+00007092  0652 04D2                 86      ADDI.W  #1234,(A2)
+00007096  0693 00BC614E             87      ADDI.L  #12345678,(A3)
+0000709C                            88      
+0000709C  0619 000A                 89      ADDI.B  #10,(A1)+      ; (An)+
+000070A0  065A 04D2                 90      ADDI.W  #1234,(A2)+
+000070A4  069B 00BC614E             91      ADDI.L  #12345678,(A3)+
+000070AA                            92      
+000070AA  0621 000A                 93      ADDI.B  #10,-(A1)      ; -(An)
+000070AE  0662 04D2                 94      ADDI.W  #1234,-(A2)
+000070B2  06A3 00BC614E             95      ADDI.L  #12345678,-(A3)
+000070B8                            96      
+000070B8  0639 000A 00001234        97      ADDI.B  #10,WORD_VAR      ; xxx.W
+000070C0  0679 04D2 00001234        98      ADDI.W  #1234,WORD_VAR
+000070C8  06B9 00BC614E 00001234    99      ADDI.L  #12345678,WORD_VAR
+000070D2                           100      
+000070D2  0639 000A FFFF1234       101      ADDI.B  #10,LONG_VAR      ; xxx.L
+000070DA  0679 04D2 FFFF1234       102      ADDI.W  #1234,LONG_VAR
+000070E2  06B9 00BC614E FFFF1234   103      ADDI.L  #12345678,LONG_VAR
+000070EC                           104      
+000070EC                           105  *----- ADDQ -----
+000070EC  5201                     106      ADDQ.B  #1,D1      ; Dn
+000070EE  5442                     107      ADDQ.W  #2,D2
+000070F0  5683                     108      ADDQ.L  #3,D3
+000070F2                           109      
+000070F2  544A                     110      ADDQ.W  #2,A2       ; An
+000070F4  568B                     111      ADDQ.L  #3,A3
+000070F6                           112      
+000070F6  5211                     113      ADDQ.B  #1,(A1)      ; (An)
+000070F8  5452                     114      ADDQ.W  #2,(A2)
+000070FA  5693                     115      ADDQ.L  #3,(A3)
+000070FC                           116      
+000070FC  5219                     117      ADDQ.B  #1,(A1)+      ; (An)+
+000070FE  545A                     118      ADDQ.W  #2,(A2)+
+00007100  569B                     119      ADDQ.L  #3,(A3)+
+00007102                           120      
+00007102  5221                     121      ADDQ.B  #1,-(A1)      ; -(An)
+00007104  5462                     122      ADDQ.W  #2,-(A2)
+00007106  56A3                     123      ADDQ.L  #3,-(A3)
+00007108                           124      
+00007108  5239 00001234            125      ADDQ.B  #1,WORD_VAR      ; xxx.W
+0000710E  5479 00001234            126      ADDQ.W  #2,WORD_VAR
+00007114  56B9 00001234            127      ADDQ.L  #3,WORD_VAR
+0000711A                           128      
+0000711A  5239 FFFF1234            129      ADDQ.B  #1,LONG_VAR      ; xxx.L
+00007120  5479 FFFF1234            130      ADDQ.W  #2,LONG_VAR
+00007126  56B9 FFFF1234            131      ADDQ.L  #3,LONG_VAR
+0000712C                           132      
+0000712C                           133  *----- AND -----
+0000712C  C401                     134      AND.B   D1,D2       ; x,Dn
+0000712E  C642                     135      AND.W   D2,D3
+00007130  C883                     136      AND.L   D3,D4
+00007132                           137      
+00007132  C211                     138      AND.B   (A1),D1
+00007134  C452                     139      AND.W   (A2),D2
+00007136  C693                     140      AND.L   (A3),D3
+00007138                           141      
+00007138  C219                     142      AND.B   (A1)+,D1
+0000713A  C45A                     143      AND.W   (A2)+,D2
+0000713C  C69B                     144      AND.L   (A3)+,D3
+0000713E                           145      
+0000713E  C221                     146      AND.B   -(A1),D1
+00007140  C462                     147      AND.W   -(A2),D2
+00007142  C6A3                     148      AND.L   -(A3),D3
+00007144                           149  
+00007144  C239 00001234            150      AND.B   WORD_VAR,D1
+0000714A  C479 00001234            151      AND.W   WORD_VAR,D2
+00007150  C6B9 00001234            152      AND.L   WORD_VAR,D3
+00007156                           153  
+00007156  C239 FFFF1234            154      AND.B   LONG_VAR,D1
+0000715C  C479 FFFF1234            155      AND.W   LONG_VAR,D2
+00007162  C6B9 FFFF1234            156      AND.L   LONG_VAR,D3
+00007168                           157  
+00007168  C23C 000A                158      AND.B   #10,D1
+0000716C  C47C 1234                159      AND.W   #WORD_VAR,D2
+00007170  C6BC FFFF1234            160      AND.L   #LONG_VAR,D3    
+00007176                           161      
+00007176  C311                     162      AND.B   D1,(A1)         ; Dn,x
+00007178  C552                     163      AND.W   D2,(A2)
+0000717A  C793                     164      AND.L   D3,(A3)
+0000717C                           165      
+0000717C  C319                     166      AND.B   D1,(A1)+
+0000717E  C55A                     167      AND.W   D2,(A2)+
+00007180  C79B                     168      AND.L   D3,(A3)+
+00007182                           169      
+00007182  C321                     170      AND.B   D1,-(A1)
+00007184  C562                     171      AND.W   D2,-(A2)
+00007186  C7A3                     172      AND.L   D3,-(A3)
+00007188                           173  
+00007188  C339 00001234            174      AND.B   D1,WORD_VAR
+0000718E  C579 00001234            175      AND.W   D2,WORD_VAR
+00007194  C7B9 00001234            176      AND.L   D3,WORD_VAR
+0000719A                           177  
+0000719A  C339 FFFF1234            178      AND.B   D1,LONG_VAR
+000071A0  C579 FFFF1234            179      AND.W   D2,LONG_VAR
+000071A6  C7B9 FFFF1234            180      AND.L   D3,LONG_VAR
+000071AC                           181      
+000071AC                           182  *----- ASL -----
+000071AC  E322                     183      ASL.B   D1,D2       ; Dn,Dn
+000071AE  E563                     184      ASL.W   D2,D3
+000071B0  E7A4                     185      ASL.L   D3,D4
+000071B2                           186      
+000071B2  E501                     187      ASL.B   #2,D1       ; #,Dn
+000071B4  E942                     188      ASL.W   #4,D2
+000071B6  ED83                     189      ASL.L   #6,D3
+000071B8                           190      
+000071B8  E1D1                     191      ASL.W   (A1)        ; destination
+000071BA  E1DA                     192      ASL.W   (A2)+
+000071BC  E1E3                     193      ASL.W   -(A3)
+000071BE  E1F9 00001234            194      ASL.W   WORD_VAR
+000071C4  E1F9 FFFF1234            195      ASL.W   LONG_VAR
+000071CA                           196      
+000071CA                           197  *----- ASR -----
+000071CA  E222                     198      ASR.B   D1,D2       ; Dn,Dn
+000071CC  E463                     199      ASR.W   D2,D3
+000071CE  E6A4                     200      ASR.L   D3,D4
+000071D0                           201      
+000071D0  E401                     202      ASR.B   #2,D1       ; #,Dn
+000071D2  E842                     203      ASR.W   #4,D2
+000071D4  EC83                     204      ASR.L   #6,D3
+000071D6                           205      
+000071D6  E0D1                     206      ASR.W   (A1)        ; destination
+000071D8  E0DA                     207      ASR.W   (A2)+
+000071DA  E0E3                     208      ASR.W   -(A3)
+000071DC  E0F9 00001234            209      ASR.W   WORD_VAR
+000071E2  E0F9 FFFF1234            210      ASR.W   LONG_VAR   
+000071E8                           211  
+000071E8                           212  *----- BRA -----
+000071E8                           213  *----- Bcc (BCC, BLT, BGE) -----
+000071E8  0C41 04D2                214              CMPI.W   #1234,D1
+000071EC  6400 0006                215              BCC     CLEAR_YES       ; BCC
+000071F0  6000 0006                216              BRA     NEXT
+000071F4                           217              
+000071F4  0601 0019                218  CLEAR_YES   ADD.B   #25,D1
+000071F8  0C42 8100                219  NEXT        CMPI.W  #$8100,D2
+000071FC  6D00 0006                220              BLT     LESS_YES        ; BLT
+00007200  6000 0006                221              BRA     NEXT_TWO
+00007204                           222              
+00007204  0603 0019                223  LESS_YES    ADD.B   #25,D3
+00007208  0C43 5000                224  NEXT_TWO    CMPI.W  #$5000,D3
+0000720C  6C00 0002                225              BGE     GREAT_YES       ; BGE          
+00007210                           226              
+00007210  0604 0019                227  GREAT_YES   ADD.B   #25,D4
+00007214                           228    
+00007214                           229  *----- DIVU -----
+00007214  82C0                     230      DIVU.W  D0,D1       ; Dn
+00007216  84D2                     231      DIVU.W  (A2),D2     ; (An)
+00007218  86DB                     232      DIVU.W  (A3)+,D3    ; (An)+
+0000721A  88E4                     233      DIVU.W  -(A4),D4    ; -(An)
+0000721C  8AF9 00001234            234      DIVU.W  WORD_VAR,D5 ; xxx.W
+00007222  8CF9 FFFF1234            235      DIVU.W  LONG_VAR,D6 ; xxx.L
+00007228  84FC 0002                236      DIVU.W  #2,D2
+0000722C                           237      
+0000722C                           238  *----- JSR -----
+0000722C  4EB9 00007408            239      JSR FIRST_JUMP
+00007232  4E91                     240      JSR (A1)            ; (An)
+00007234  4EB9 00001234            241      JSR WORD_VAR        ; xxx.W
+0000723A  4EB9 FFFF1234            242      JSR LONG_VAR        ; xxx.L
+00007240                           243      
+00007240                           244  *----- LEA ------
+00007240  43D0                     245      LEA (A0),A1
+00007242  45F9 00001234            246      LEA WORD_VAR,A2
+00007248  47F9 FFFF1234            247      LEA LONG_VAR,A3
+0000724E  49F8 0001                248      LEA $1,A4
+00007252                           249      
+00007252                           250  *----- LSL -----
+00007252  E32A                     251      LSL.B   D1,D2       ; Dn,Dn
+00007254  E56B                     252      LSL.W   D2,D3
+00007256  E7AC                     253      LSL.L   D3,D4
+00007258                           254      
+00007258  E509                     255      LSL.B   #2,D1       ; #,Dn
+0000725A  E94A                     256      LSL.W   #4,D2
+0000725C  ED8B                     257      LSL.L   #6,D3
+0000725E                           258      
+0000725E  E3D1                     259      LSL.W   (A1)        ; destination
+00007260  E3DA                     260      LSL.W   (A2)+
+00007262  E3E3                     261      LSL.W   -(A3)
+00007264  E3F9 00001234            262      LSL.W   WORD_VAR
+0000726A  E3F9 FFFF1234            263      LSL.W   LONG_VAR
+00007270                           264      
+00007270                           265  *----- LSR -----
+00007270  E22A                     266      LSR.B   D1,D2       ; Dn,Dn
+00007272  E46B                     267      LSR.W   D2,D3
+00007274  E6AC                     268      LSR.L   D3,D4
+00007276                           269      
+00007276  E409                     270      LSR.B   #2,D1       ; #,Dn
+00007278  E84A                     271      LSR.W   #4,D2
+0000727A  EC8B                     272      LSR.L   #6,D3
+0000727C                           273      
+0000727C  E2D1                     274      LSR.W   (A1)        ; destination
+0000727E  E2DA                     275      LSR.W   (A2)+
+00007280  E2E3                     276      LSR.W   -(A3)
+00007282  E2F9 00001234            277      LSR.W   WORD_VAR
+00007288  E2F9 FFFF1234            278      LSR.W   LONG_VAR
+0000728E                           279      
+0000728E                           280  *----- MOVEQ ------
+0000728E  720A                     281      MOVEQ.L   #10,D1
+00007290  7410                     282      MOVEQ.L   #$10,D2
+00007292                           283      
+00007292                           284  *----- MOVEA ------
+00007292  3241                     285      MOVEA.W D1,A1       ; Dn
+00007294  2442                     286      MOVEA.L D2,A2
+00007296                           287      
+00007296  3649                     288      MOVEA.W A1,A3       ; An
+00007298  284A                     289      MOVEA.L A2,A4
+0000729A                           290      
+0000729A  3253                     291      MOVEA.W (A3),A1       ; (An)
+0000729C  2454                     292      MOVEA.L (A4),A2
+0000729E                           293      
+0000729E  325B                     294      MOVEA.W (A3)+,A1       ; (An)+
+000072A0  245C                     295      MOVEA.L (A4)+,A2
+000072A2                           296      
+000072A2  3263                     297      MOVEA.W -(A3),A1       ; -(An)
+000072A4  2464                     298      MOVEA.L -(A4),A2
+000072A6                           299      
+000072A6  3279 00001234            300      MOVEA.W WORD_VAR,A1       ; xxx.W
+000072AC  2479 00001234            301      MOVEA.L WORD_VAR,A2
+000072B2                           302      
+000072B2  3279 FFFF1234            303      MOVEA.W LONG_VAR,A1       ; xxx.L
+000072B8  2479 FFFF1234            304      MOVEA.L LONG_VAR,A2
+000072BE                           305      
+000072BE                           306  *----- MOVEM -----
+000072BE  4891 0E0E                307      MOVEM.W D1-D3/A1-A3,(A1)        ; (An)
+000072C2  4892 0E0E                308      MOVEM.W D1-D3/A1-A3,(A2)
+000072C6                           309      
+000072C6  48A1 7070                310      MOVEM.W D1-D3/A1-A3,-(A1)       ; -(An)
+000072CA  48A2 7070                311      MOVEM.W D1-D3/A1-A3,-(A2)
+000072CE                           312      
+000072CE  48B9 0E0E 00001234       313      MOVEM.W D1-D3/A1-A3,WORD_VAR    ; xxx.W
+000072D6  48B9 0E0E 00001234       314      MOVEM.W D1-D3/A1-A3,WORD_VAR
+000072DE                           315  
+000072DE  48B9 0E0E FFFF1234       316      MOVEM.W D1-D3/A1-A3,LONG_VAR    ; xxx.L
+000072E6  48B9 0E0E FFFF1234       317      MOVEM.W D1-D3/A1-A3,LONG_VAR
+000072EE                           318      
+000072EE                           319  *----- MOVE -----
+000072EE  1200                     320      MOVE.B  D0,D1
+000072F0  3401                     321      MOVE.W  D1,D2
+000072F2  2602                     322      MOVE.L  D2,D3
+000072F4                           323      
+000072F4  340A                     324      MOVE.W  A2,D2
+000072F6  260B                     325      MOVE.L  A3,D3
+000072F8                           326      
+000072F8  1281                     327      MOVE.B  D1,(A1)
+000072FA  3482                     328      MOVE.W  D2,(A2)
+000072FC  2683                     329      MOVE.L  D3,(A3)
+000072FE                           330      
+000072FE  13D1 00001234            331      MOVE.B  (A1),WORD_VAR
+00007304  33D2 FFFF1234            332      MOVE.W  (A2),LONG_VAR
+0000730A  23D3 FFFF1234            333      MOVE.L  (A3),LONG_VAR
+00007310                           334      
+00007310  1519                     335      MOVE.B  (A1)+,-(A2)
+00007312  33DA FFFF1234            336      MOVE.W  (A2)+,LONG_VAR
+00007318  261B                     337      MOVE.L  (A3)+,D3
+0000731A                           338  
+0000731A  14E1                     339      MOVE.B  -(A1),(A2)+
+0000731C  3422                     340      MOVE.W  -(A2),D2
+0000731E  23E3 FFFF1234            341      MOVE.L  -(A3),LONG_VAR   
+00007324                           342  
+00007324  123C 000A                343      MOVE.B  #10,D1
+00007328  343C 1234                344      MOVE.W  #WORD_VAR,D2
+0000732C  263C FFFF1234            345      MOVE.L  #LONG_VAR,D3
+00007332                           346      
+00007332                           347  *----- MULS -----
+00007332  C5C1                     348      MULS.W    D1,D2       ; Dn
+00007334  C3D1                     349      MULS.W    (A1),D1     ; (An)
+00007336  C5DA                     350      MULS.W    (A2)+,D2    ; (An)+
+00007338  C7E3                     351      MULS.W    -(A3),D3    ; -(An)
+0000733A  C9F9 00001234            352      MULS.W    WORD_VAR,D4 ; xxx.W
+00007340  CBF9 FFFF1234            353      MULS.W    LONG_VAR,D5 ; xxx.L
+00007346  C3FC 0002                354      MULS.W    #2,D1
+0000734A                           355      
+0000734A                           356  *----- NOP -----
+0000734A  4E71                     357      NOP
+0000734C                           358      
+0000734C                           359  *----- OR -----
+0000734C  8401                     360      OR.B    D1,D2       ; x,Dn
+0000734E  8642                     361      OR.W    D2,D3
+00007350  8883                     362      OR.L    D3,D4
+00007352                           363      
+00007352  8211                     364      OR.B    (A1),D1
+00007354  8452                     365      OR.W    (A2),D2
+00007356  8693                     366      OR.L    (A3),D3
+00007358                           367      
+00007358  8219                     368      OR.B    (A1)+,D1
+0000735A  845A                     369      OR.W    (A2)+,D2
+0000735C  869B                     370      OR.L    (A3)+,D3
+0000735E                           371      
+0000735E  8221                     372      OR.B    -(A1),D1
+00007360  8462                     373      OR.W    -(A2),D2
+00007362  86A3                     374      OR.L    -(A3),D3
+00007364                           375  
+00007364  8239 00001234            376      OR.B    WORD_VAR,D1
+0000736A  8479 00001234            377      OR.W    WORD_VAR,D2
+00007370  86B9 00001234            378      OR.L    WORD_VAR,D3
+00007376                           379  
+00007376  8239 FFFF1234            380      OR.B    LONG_VAR,D1
+0000737C  8479 FFFF1234            381      OR.W    LONG_VAR,D2
+00007382  86B9 FFFF1234            382      OR.L    LONG_VAR,D3
+00007388                           383  
+00007388  823C 000A                384      OR.B    #10,D1
+0000738C  847C 1234                385      OR.W    #WORD_VAR,D2
+00007390  86BC FFFF1234            386      OR.L    #LONG_VAR,D3    
+00007396                           387      
+00007396  8311                     388      OR.B    D1,(A1)         ; Dn,x
+00007398  8552                     389      OR.W    D2,(A2)
+0000739A  8793                     390      OR.L    D3,(A3)
+0000739C                           391      
+0000739C  8319                     392      OR.B    D1,(A1)+
+0000739E  855A                     393      OR.W    D2,(A2)+
+000073A0  879B                     394      OR.L    D3,(A3)+
+000073A2                           395  
+000073A2  8321                     396      OR.B    D1,-(A1)
+000073A4  8562                     397      OR.W    D2,-(A2)
+000073A6  87A3                     398      OR.L    D3,-(A3)
+000073A8                           399  
+000073A8  8339 00001234            400      OR.B    D1,WORD_VAR
+000073AE  8579 00001234            401      OR.W    D2,WORD_VAR
+000073B4  87B9 00001234            402      OR.L    D3,WORD_VAR
+000073BA                           403  
+000073BA  8339 FFFF1234            404      OR.B    D1,LONG_VAR
+000073C0  8579 FFFF1234            405      OR.W    D2,LONG_VAR
+000073C6  87B9 FFFF1234            406      OR.L    D3,LONG_VAR
+000073CC                           407      
+000073CC                           408  *----- ROL -----
+000073CC  E33A                     409      ROL.B   D1,D2       ; Dn,Dn
+000073CE  E57B                     410      ROL.W   D2,D3
+000073D0  E7BC                     411      ROL.L   D3,D4
+000073D2                           412      
+000073D2  E519                     413      ROL.B   #2,D1       ; #,Dn
+000073D4  E95A                     414      ROL.W   #4,D2
+000073D6  ED9B                     415      ROL.L   #6,D3
+000073D8                           416      
+000073D8  E7D1                     417      ROL.W   (A1)        ; destination
+000073DA  E7DA                     418      ROL.W   (A2)+
+000073DC  E7E3                     419      ROL.W   -(A3)
+000073DE  E7F9 00001234            420      ROL.W   WORD_VAR
+000073E4  E7F9 FFFF1234            421      ROL.W   LONG_VAR
+000073EA                           422      
+000073EA                           423  *----- ROR -----
+000073EA  E23A                     424      ROR.B   D1,D2       ; Dn,Dn
+000073EC  E47B                     425      ROR.W   D2,D3
+000073EE  E6BC                     426      ROR.L   D3,D4
+000073F0                           427      
+000073F0  E419                     428      ROR.B   #2,D1       ; #,Dn
+000073F2  E85A                     429      ROR.W   #4,D2
+000073F4  EC9B                     430      ROR.L   #6,D3
+000073F6                           431      
+000073F6  E6D1                     432      ROR.W   (A1)        ; destination
+000073F8  E6DA                     433      ROR.W   (A2)+
+000073FA  E6E3                     434      ROR.W   -(A3)
+000073FC  E6F9 00001234            435      ROR.W   WORD_VAR
+00007402  E6F9 FFFF1234            436      ROR.W   LONG_VAR
+00007408                           437      
+00007408                           438  *----- RTS -----
+00007408  4E75                     439  FIRST_JUMP  RTS
+0000740A                           440      
+0000740A                           441  *----- SUB -----
+0000740A  9200                     442      SUB.B   D0,D1      ; x, Dn
+0000740C  9441                     443      SUB.W   D1,D2
+0000740E  9682                     444      SUB.L   D2,D3
+00007410                           445      
+00007410  944A                     446      SUB.W   A2,D2
+00007412  968B                     447      SUB.L   A3,D3
+00007414                           448      
+00007414  9211                     449      SUB.B   (A1),D1
+00007416  9452                     450      SUB.W   (A2),D2
+00007418  9693                     451      SUB.L   (A3),D3
+0000741A                           452      
+0000741A  9219                     453      SUB.B   (A1)+,D1
+0000741C  945A                     454      SUB.W   (A2)+,D2
+0000741E  969B                     455      SUB.L   (A3)+,D3
+00007420                           456  
+00007420  9221                     457      SUB.B   -(A1),D1
+00007422  9462                     458      SUB.W   -(A2),D2
+00007424  96A3                     459      SUB.L   -(A3),D3
+00007426                           460  
+00007426  9479 00001234            461      SUB.W   WORD_VAR,D2
+0000742C  96B9 FFFF1234            462      SUB.L   LONG_VAR,D3   
+00007432                           463  
+00007432  92C0                     464      SUB.W   D0,A1       ; Dn, x
+00007434  95C1                     465      SUB.L   D1,A2 
+00007436                           466      
+00007436  9311                     467      SUB.B   D1,(A1)
+00007438  9552                     468      SUB.W   D2,(A2)
+0000743A  9793                     469      SUB.L   D3,(A3)
+0000743C                           470      
+0000743C  9319                     471      SUB.B   D1,(A1)+
+0000743E  955A                     472      SUB.W   D2,(A2)+
+00007440  979B                     473      SUB.L   D3,(A3)+
+00007442                           474  
+00007442  9321                     475      SUB.B   D1,-(A1)
+00007444  9562                     476      SUB.W   D2,-(A2)
+00007446  97A3                     477      SUB.L   D3,-(A3)  
+00007448                           478  
+00007448  9579 00001234            479      SUB.W   D2,WORD_VAR
+0000744E  97B9 FFFF1234            480      SUB.L   D3,LONG_VAR
+00007454                           481  
+00007454                           482  *----- SUBI ------
+00007454  5301                     483      SUBI.B  #1,D1
+00007456  5542                     484      SUBI.W  #2,D2
+00007458  5783                     485      SUBI.L  #3,D3       
+0000745A                           486      
+0000745A  5311                     487      SUBI.B  #1,(A1)
+0000745C  5552                     488      SUBI.W  #2,(A2)
+0000745E  5793                     489      SUBI.L  #3,(A3) 
+00007460                           490      
+00007460  5319                     491      SUBI.B  #1,(A1)+
+00007462  555A                     492      SUBI.W  #2,(A2)+
+00007464  579B                     493      SUBI.L  #3,(A3)+  
+00007466                           494  
+00007466  5321                     495      SUBI.B  #1,-(A1)
+00007468  5562                     496      SUBI.W  #2,-(A2)
+0000746A  57A3                     497      SUBI.L  #3,-(A3)
+0000746C                           498  
+0000746C  5339 00001234            499      SUBI.B  #1,WORD_VAR
+00007472  5579 FFFF1234            500      SUBI.W  #2,LONG_VAR
+00007478                           501      
+00007478                           502  *----- INVALID Instructions -----
+00007478                           503  
+00007478                           504  
+00007478                           505  * Put variables and constants here
+00007478  =000000AB                506  BYTE_VAR    EQU $AB
+00007478  =00001234                507  WORD_VAR    EQU $1234
+00007478  =FFFF1234                508  LONG_VAR    EQU $FFFF1234
+00007478                           509  
+00007478                           510      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+BYTE_VAR            AB
+CLEAR_YES           71F4
+FIRST_JUMP          7408
+GREAT_YES           7210
+LESS_YES            7204
+LONG_VAR            FFFF1234
+NEXT                71F8
+NEXT_TWO            7208
+START               7000
+WORD_VAR            1234
